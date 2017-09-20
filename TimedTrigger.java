@@ -45,7 +45,7 @@ public class TimedTrigger
             return false;
 
         this.ticks += delta;
-        System.out.println(ticks);
+
         if(this.ticksBeforeStartLoopingReached && (this.ticks > this.ticksBetweenTriggers)
                 || !this.ticksBeforeStartLoopingReached && (this.ticks > this.ticksBeforeStartLooping))
         {
