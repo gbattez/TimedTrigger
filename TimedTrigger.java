@@ -24,7 +24,6 @@ public class TimedTrigger {
             this.ticksToTrigger.add(ttt);
         Collections.sort(this.ticksToTrigger);
 
-
         this.ticksBeforeStartLooping = ticksBetweenTriggers;
         this.loopsToMake = 1;
     }
@@ -78,7 +77,6 @@ public class TimedTrigger {
                 return true;
             }
         }
-
         return false;
     }
 
