@@ -10,7 +10,6 @@ public class TimedTrigger {
     private int loopsToMake;
     private int loopNumber;
     private boolean finished;
-    private boolean ticksBeforeStartLoopingReached;
 
     public TimedTrigger(float ticksBetweenTriggers) {
         this.ticksToTrigger.add(ticksBetweenTriggers);
@@ -47,30 +46,26 @@ public class TimedTrigger {
     //-----------------------------------------------------------------
 
     /**
-     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksToTrigger
+     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksBetweenTriggers
      * @param delta deltaTime
      */
     public boolean triggered(float delta) {
         if(finished || ticksToTrigger.isEmpty()) return false;
 
         ticks += delta;
-
         //Ticks reached
-        if(this.ticksBeforeStartLoopingReached && (ticks > ticksToTrigger.get(TTTIndex))
-                || !ticksBeforeStartLoopingReached && (ticks > ticksBeforeStartLooping)) {
-            ticksBeforeStartLoopingReached = true;
-
-            if(++TTTIndex >= ticksToTrigger.size())
-                TTTIndex = 0;
-             else
+        if(ticks >= ticksToTrigger.get(TTTIndex) + ticksBeforeStartLooping) {
+            if(++TTTIndex < ticksToTrigger.size())
                 return true;
+            else
+                TTTIndex = 0;
 
             if(loopsToMake == -1) {
-                ticks = 0;
+                ticks -= ticksToTrigger.get(ticksToTrigger.size() - 1);
                 return true;
             }
             if(loopsToMake > 0) {
-                ticks = 0;
+                ticks -= ticksToTrigger.get(ticksToTrigger.size() - 1);
                 if(++loopNumber >= loopsToMake) {
                     finished = true;
                 }
@@ -80,11 +75,11 @@ public class TimedTrigger {
         return false;
     }
 
-    public void reset() {
+    public void reset(boolean resetTicksBeforeStartLooping) {
         loopNumber = 0;
-        ticks = 0;
+        ticks = resetTicksBeforeStartLooping ? 0 : ticksBeforeStartLooping;
         finished = false;
-        ticksBeforeStartLoopingReached = false;
+        TTTIndex = 0;
     }
 
     public float getTicks() {
@@ -107,9 +102,6 @@ public class TimedTrigger {
         return finished;
     }
 
-    public boolean isTicksBeforeStartLoopingReached() {
-        return ticksBeforeStartLoopingReached;
-    }
 
     public void setTicksBeforeStartLooping(float ticksBeforeStartLooping) {
         this.ticksBeforeStartLooping = ticksBeforeStartLooping;
