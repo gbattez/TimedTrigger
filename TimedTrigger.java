@@ -46,7 +46,7 @@ public class TimedTrigger {
     //-----------------------------------------------------------------
 
     /**
-     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksBetweenTriggers
+     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > tickstoTrigger
      * @param delta deltaTime
      */
     public boolean triggered(float delta) {
