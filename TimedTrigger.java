@@ -5,7 +5,7 @@ import java.util.List;
 public class TimedTrigger {
     private float ticks;
     private float ticksBeforeStartLooping;
-    private List<Float> ticksBetweenTriggers = new ArrayList<>();
+    private List<Float> ticksToTrigger = new ArrayList<>();
     private int TTTIndex;
     private int loopsToMake;
     private int loopNumber;
@@ -13,16 +13,16 @@ public class TimedTrigger {
     private boolean ticksBeforeStartLoopingReached;
 
     public TimedTrigger(float ticksBetweenTriggers) {
-        this.ticksBetweenTriggers.add(ticksBetweenTriggers);
+        this.ticksToTrigger.add(ticksBetweenTriggers);
         this.ticksBeforeStartLooping = ticksBetweenTriggers;
         this.loopsToMake = 1;
     }
 
     public TimedTrigger(float ticksBetweenTriggers, float... rest) {
-        this.ticksBetweenTriggers.add(ticksBetweenTriggers);
+        this.ticksToTrigger.add(ticksBetweenTriggers);
         for (Float ttt : rest)
-            this.ticksBetweenTriggers.add(ttt);
-        Collections.sort(this.ticksBetweenTriggers);
+            this.ticksToTrigger.add(ttt);
+        Collections.sort(this.ticksToTrigger);
 
 
         this.ticksBeforeStartLooping = ticksBetweenTriggers;
@@ -48,20 +48,20 @@ public class TimedTrigger {
     //-----------------------------------------------------------------
 
     /**
-     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksBetweenTriggers
+     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksToTrigger
      * @param delta deltaTime
      */
     public boolean triggered(float delta) {
-        if(finished || ticksBetweenTriggers.isEmpty()) return false;
+        if(finished || ticksToTrigger.isEmpty()) return false;
 
         ticks += delta;
 
         //Ticks reached
-        if(this.ticksBeforeStartLoopingReached && (ticks > ticksBetweenTriggers.get(TTTIndex))
+        if(this.ticksBeforeStartLoopingReached && (ticks > ticksToTrigger.get(TTTIndex))
                 || !ticksBeforeStartLoopingReached && (ticks > ticksBeforeStartLooping)) {
             ticksBeforeStartLoopingReached = true;
 
-            if(++TTTIndex >= ticksBetweenTriggers.size())
+            if(++TTTIndex >= ticksToTrigger.size())
                 TTTIndex = 0;
              else
                 return true;
@@ -98,7 +98,7 @@ public class TimedTrigger {
     }
 
     public List<Float> getTicksBetweenTriggers() {
-        return ticksBetweenTriggers;
+        return ticksToTrigger;
     }
 
     public int getLoopNumber() {
@@ -118,33 +118,33 @@ public class TimedTrigger {
     }
 
     public void addTicksBetweenTriggers(float ticks) {
-        ticksBetweenTriggers.add(ticks);
-        Collections.sort(this.ticksBetweenTriggers);
+        ticksToTrigger.add(ticks);
+        Collections.sort(this.ticksToTrigger);
     }
 
     public void addTicksBetweenTriggers(float ticks, float... rest) {
-        ticksBetweenTriggers.add(ticks);
+        ticksToTrigger.add(ticks);
         for (Float ttt : rest)
-            this.ticksBetweenTriggers.add(ttt);
+            this.ticksToTrigger.add(ttt);
 
-        Collections.sort(this.ticksBetweenTriggers);
+        Collections.sort(this.ticksToTrigger);
     }
 
     public void removeTicksBetweenTriggers(float ticks) {
-        ticksBetweenTriggers.add(ticks);
-        Collections.sort(this.ticksBetweenTriggers);
+        ticksToTrigger.add(ticks);
+        Collections.sort(this.ticksToTrigger);
     }
 
     public void removeTicksBetweenTriggers(float ticks, float... rest) {
-        ticksBetweenTriggers.remove(ticks);
+        ticksToTrigger.remove(ticks);
         for (Float ttt : rest)
-            this.ticksBetweenTriggers.remove(ttt);
+            this.ticksToTrigger.remove(ttt);
 
-        Collections.sort(this.ticksBetweenTriggers);
+        Collections.sort(this.ticksToTrigger);
     }
 
     public void setTicksBetweenTriggers(List<Float> ticksBetweenTriggers) {
-        this.ticksBetweenTriggers = ticksBetweenTriggers;
+        this.ticksToTrigger = ticksBetweenTriggers;
     }
 
     public void setLoopsToMake(int loopsToMake) {
