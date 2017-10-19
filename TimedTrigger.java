@@ -13,7 +13,6 @@ public class TimedTrigger {
 
     public TimedTrigger(float ticksBetweenTriggers) {
         this.ticksToTrigger.add(ticksBetweenTriggers);
-        this.ticksBeforeStartLooping = ticksBetweenTriggers;
         this.loopsToMake = 1;
     }
 
@@ -23,7 +22,6 @@ public class TimedTrigger {
             this.ticksToTrigger.add(ttt);
         Collections.sort(this.ticksToTrigger);
 
-        this.ticksBeforeStartLooping = ticksBetweenTriggers;
         this.loopsToMake = 1;
     }
 
@@ -46,7 +44,7 @@ public class TimedTrigger {
     //-----------------------------------------------------------------
 
     /**
-     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks >= ticksToTrigger
+     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksToTrigger
      * @param delta deltaTime
      */
     public boolean triggered(float delta) {
