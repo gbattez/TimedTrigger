@@ -5,22 +5,22 @@ import java.util.List;
 public class TimedTrigger {
     private float ticks;
     private float ticksBeforeStartLooping;
-    private List<Float> ticksToTrigger = new ArrayList<>();
-    private int TTTIndex;
+    private List<Float> triggeringTicks = new ArrayList<>();
+    private int triggeringTicksIndex;
     private int loopsToMake;
     private int loopNumber;
     private boolean finished;
 
-    public TimedTrigger(float ticksBetweenTriggers) {
-        this.ticksToTrigger.add(ticksBetweenTriggers);
+    public TimedTrigger(float triggeringTicks) {
+        this.triggeringTicks.add(triggeringTicks);
         this.loopsToMake = 1;
     }
 
-    public TimedTrigger(float ticksBetweenTriggers, float... rest) {
-        this.ticksToTrigger.add(ticksBetweenTriggers);
-        for (Float ttt : rest)
-            this.ticksToTrigger.add(ttt);
-        Collections.sort(this.ticksToTrigger);
+    public TimedTrigger(float triggeringTicks, float... rest) {
+        this.triggeringTicks.add(triggeringTicks);
+        for (Float tti : rest)
+            this.triggeringTicks.add(tti);
+        Collections.sort(this.triggeringTicks);
 
         this.loopsToMake = 1;
     }
@@ -44,26 +44,26 @@ public class TimedTrigger {
     //-----------------------------------------------------------------
 
     /**
-     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > ticksToTrigger
+     * Run the timer and returns true if ticksBeforeStartLooping is reached and ticks > triggeringTicks
      * @param delta deltaTime
      */
     public boolean triggered(float delta) {
-        if(finished || ticksToTrigger.isEmpty()) return false;
+        if(finished || triggeringTicks.isEmpty()) return false;
 
         ticks += delta;
         //Ticks reached
-        if(ticks >= ticksToTrigger.get(TTTIndex) + ticksBeforeStartLooping) {
-            if(++TTTIndex < ticksToTrigger.size())
+        if(ticks >= triggeringTicks.get(triggeringTicksIndex) + ticksBeforeStartLooping) {
+            if(++triggeringTicksIndex < triggeringTicks.size())
                 return true;
             else
-                TTTIndex = 0;
+                triggeringTicksIndex = 0;
 
             if(loopsToMake == -1) {
-                ticks -= ticksToTrigger.get(ticksToTrigger.size() - 1);
+                ticks -= triggeringTicks.get(triggeringTicks.size() - 1);
                 return true;
             }
             if(loopsToMake > 0) {
-                ticks -= ticksToTrigger.get(ticksToTrigger.size() - 1);
+                ticks -= triggeringTicks.get(triggeringTicks.size() - 1);
                 if(++loopNumber >= loopsToMake) {
                     finished = true;
                 }
@@ -77,7 +77,7 @@ public class TimedTrigger {
         loopNumber = 0;
         ticks = resetTicksBeforeStartLooping ? 0 : ticksBeforeStartLooping;
         finished = false;
-        TTTIndex = 0;
+        triggeringTicksIndex = 0;
     }
 
     public float getTicks() {
@@ -88,8 +88,8 @@ public class TimedTrigger {
         return ticksBeforeStartLooping;
     }
 
-    public List<Float> getTicksBetweenTriggers() {
-        return ticksToTrigger;
+    public List<Float> getTriggeringTicks() {
+        return triggeringTicks;
     }
 
     public int getLoopNumber() {
@@ -105,34 +105,34 @@ public class TimedTrigger {
         this.ticksBeforeStartLooping = ticksBeforeStartLooping;
     }
 
-    public void addTicksBetweenTriggers(float ticks) {
-        ticksToTrigger.add(ticks);
-        Collections.sort(this.ticksToTrigger);
+    public void addTriggeringTicks(float ticks) {
+        triggeringTicks.add(ticks);
+        Collections.sort(this.triggeringTicks);
     }
 
-    public void addTicksBetweenTriggers(float ticks, float... rest) {
-        ticksToTrigger.add(ticks);
-        for (Float ttt : rest)
-            this.ticksToTrigger.add(ttt);
+    public void addTriggeringTicks(float ticks, float... rest) {
+        triggeringTicks.add(ticks);
+        for (Float triggeringTicks : rest)
+            this.triggeringTicks.add(triggeringTicks);
 
-        Collections.sort(this.ticksToTrigger);
+        Collections.sort(this.triggeringTicks);
     }
 
-    public void removeTicksBetweenTriggers(float ticks) {
-        ticksToTrigger.add(ticks);
-        Collections.sort(this.ticksToTrigger);
+    public void removeTriggeringTicks(float ticks) {
+        triggeringTicks.add(ticks);
+        Collections.sort(this.triggeringTicks);
     }
 
-    public void removeTicksBetweenTriggers(float ticks, float... rest) {
-        ticksToTrigger.remove(ticks);
-        for (Float ttt : rest)
-            this.ticksToTrigger.remove(ttt);
+    public void removeTriggeringTicks(float ticks, float... rest) {
+        triggeringTicks.remove(ticks);
+        for (Float triggeringTicks : rest)
+            this.triggeringTicks.remove(triggeringTicks);
 
-        Collections.sort(this.ticksToTrigger);
+        Collections.sort(this.triggeringTicks);
     }
 
-    public void setTicksBetweenTriggers(List<Float> ticksBetweenTriggers) {
-        this.ticksToTrigger = ticksBetweenTriggers;
+    public void setTriggeringTicks(List<Float> triggeringTicks) {
+        this.triggeringTicks = triggeringTicks;
     }
 
     public void setLoopsToMake(int loopsToMake) {
